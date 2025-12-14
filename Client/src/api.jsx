@@ -1,6 +1,6 @@
-const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = `${import.meta.env.VITE_API_URL}/api/playlist`; 
 
-// ✅ FETCH SONGS
+
 export async function fetchSongs(token) {
   console.log("🔐 Token used in fetchSongs:", token);
 
@@ -13,7 +13,7 @@ export async function fetchSongs(token) {
   return await response.json();
 }
 
-// ✅ ADD SONG
+
 export async function addSong(data, token) {
   try {
     const isFormData = data instanceof FormData;
@@ -39,7 +39,7 @@ export async function addSong(data, token) {
   }
 }
 
-// ✅ DELETE SONG
+
 export async function deleteSong(id, token) {
   const response = await fetch(`${BASE_URL}/songs/${id}`, {
     method: "DELETE",

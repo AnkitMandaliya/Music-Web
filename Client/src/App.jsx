@@ -13,10 +13,10 @@ function App() {
   const [songs, setSongs] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(!!token);
 
-  // 🌙 Theme State
+  
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
 
-  // 🌙 Theme Effect
+  
   useEffect(() => {
     const root = window.document.documentElement;
     if (theme === "dark") {
@@ -27,7 +27,6 @@ function App() {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  // 🧠 Fetch Songs
   useEffect(() => {
     if (token) {
       fetchSongs(token)
@@ -36,19 +35,18 @@ function App() {
     }
   }, [token]);
 
-  // 🔁 Auth Sync
   useEffect(() => {
     const checkLogin = () => setIsLoggedIn(!!localStorage.getItem("token"));
     window.addEventListener("storage", checkLogin);
     return () => window.removeEventListener("storage", checkLogin);
   }, []);
 
-  // ➕ Add Song
+ 
   const handleAddSong = (newSong) => {
     setSongs((prev) => [...prev, newSong]);
   };
 
-  // ❌ Delete Song
+
   const handleDeleteSong = async (id) => {
     try {
       await deleteSong(id, token);
@@ -66,7 +64,7 @@ function App() {
           ? "bg-gradient-to-br from-gray-900 to-gray-800 text-white"
           : "bg-gradient-to-br from-white to-blue-100 text-black"}`}
     >
-      {/* 🎧 Header */}
+     
       <header className="w-full text-center mb-6 px-4 mt-5">
         <h1 className={`text-xl sm:text-3xl md:text-4xl font-bold border-2 border-dashed rounded-lg py-3 sm:py-4 shadow-md 
           ${theme === "dark" 
@@ -78,13 +76,12 @@ function App() {
         </h1>
         <button
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          className="mt-3 px-4 py-2 rounded-md border text-sm bg-white dark:bg-gray-800 dark:text-white dark:border-gray-600 transition"
-        >
+          className={`mt-3 px-4 py-2 rounded-md border text-sm bg-white dark:bg-gray-800 dark:text-white dark:border-gray-600 transition`}>
           {theme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode"}
         </button>
       </header>
 
-      {/* 🌐 Navigation */}
+     
       <nav className="flex flex-wrap justify-center gap-4 sm:gap-6 mb-8">
         <NavLink to="/" className={ `${theme === "dark"?"text-yellow-400":"text-blue-600"} hover:underline text-sm sm:text-base`}>
           Home
@@ -117,15 +114,14 @@ function App() {
               localStorage.removeItem("user");
               window.location.href = "/";
             }}
-            className="bg-blue-500 dark:bg-pink-600 text-white text-sm sm:text-base px-4 py-2 rounded hover:bg-blue-600 dark:hover:bg-pink-700 transition duration-200 shadow"
+            className={`${theme==="dark"?"bg-pink-600 hover:bg-pink-700":""}bg-blue-500 dark: text-white text-sm sm:text-base px-4 py-2 rounded hover:bg-blue-600  transition duration-200 shadow`}
           >
             Logout
           </button>
         )}
       </nav>
 
-      {/* 📄 Routes */}
-      <main className="flex-grow overflow-y-auto w-full px-4 sm:px-6 lg:px-8 mt-5">
+      <main className="flex-grow overflow-y-auto w-full px-4 sm:px-6 lg:px-8 mt-5 ">
         <Routes>
           <Route path="/" element={<Home logged={isLoggedIn} />} />
           <Route

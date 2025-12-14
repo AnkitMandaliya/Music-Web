@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Button } from "./input";
 
-// Convert YouTube link to embed URL
+
 function convertToEmbedURL(url) {
   if (!url) return null;
   if (url.includes("watch?v=")) {
@@ -15,7 +15,6 @@ function convertToEmbedURL(url) {
   return null;
 }
 
-// Global media controller
 let currentMedia = null;
 
 export function SongItem({ song, onDelete }) {
@@ -24,10 +23,10 @@ export function SongItem({ song, onDelete }) {
   const embedUrl = convertToEmbedURL(song.url);
 
   const audioUrl = song.filePath
-    ? `http://localhost:5000/${song.filePath}`
+    ? `${import.meta.VITE_API_URL}/${song.filePath}`
     : song.url;
 
-  // MP3 audio pause logic
+
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -50,7 +49,6 @@ export function SongItem({ song, onDelete }) {
     return () => audio.removeEventListener("play", handlePlay);
   }, []);
 
-  // YouTube player pause others on load
   const handleYouTubeLoad = () => {
     const iframe = iframeRef.current;
     if (!iframe) return;
@@ -71,7 +69,7 @@ export function SongItem({ song, onDelete }) {
 
   return (
     <div className="w-full flex flex-col gap-4">
-      {/* Song Info */}
+  
       <div className="flex flex-wrap items-center gap-4 bg-white border border-purple-300 rounded-xl shadow-md p-4">
         <div className="flex flex-col min-w-0 flex-1">
           <h2 className="text-lg sm:text-xl font-semibold text-blue-700 break-words">
@@ -103,7 +101,6 @@ export function SongItem({ song, onDelete }) {
         </div>
       </div>
 
-      {/* Media Player */}
       {embedUrl ? (
         <iframe
           ref={iframeRef}

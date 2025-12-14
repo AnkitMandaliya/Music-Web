@@ -15,16 +15,16 @@ const reducer = (state, action) => {
 
 export function Register() {
   const [state, dispatch] = useReducer(reducer, initialvalue);
-  const [error,setError]=useState("")
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
-    e.preventDefault(); // ✅ Prevent page reload
+    e.preventDefault();
     if (!state.email || !state.password || !state.username) {
       setError("Email and password are required");
       return;
     }
-   const Passpattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).+$/;
-    if (state.username.length>8){
+    const Passpattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).+$/;
+    if (state.username.length > 8) {
       setError("Username should not be more than 8 character ");
       return;
     }
@@ -37,27 +37,36 @@ export function Register() {
       );
       return;
     } else {
-      setError(""); // Clear any previous error
+      setError("");
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(state),
-      });
+      if (!import.meta.env.VITE_API_URL) {
+        alert("❌ API URL not configured");
+        return;
+      }
 
-      const data = await res.json();
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/register`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(state),
+        }
+      );
+
+      let data;
+      const contentType = res.headers.get("content-type");
+
+      if (contentType && contentType.includes("application/json")) {
+        data = await res.json();
+      } else {
+        throw new Error("Server did not return JSON");
+      }
 
       if (res.ok) {
         alert("✅ Registered successfully!");
-        // Clear form if needed:
-        dispatch({ field: "username", val: "" });
-        dispatch({ field: "email", val: "" });
-        dispatch({ field: "password", val: "" });
         localStorage.setItem("token", data.token);
-        window.dispatchEvent(new Event("storage")); // ✅ Important
-
         navigate("/");
       } else {
         alert("❌ " + data.message);
@@ -105,10 +114,10 @@ export function Register() {
           className="w-full"
         />
         {error && (
-        <p className="text-red-700 text-sm text-center font-semibold mb-2">
-          {error}
-        </p>
-      )}
+          <p className="text-red-700 text-sm text-center font-semibold mb-2">
+            {error}
+          </p>
+        )}
         <Button text="Register" className="w-full" />
       </form>
     </div>

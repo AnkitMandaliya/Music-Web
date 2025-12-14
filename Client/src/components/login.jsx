@@ -24,7 +24,7 @@ export function Login() {
      }
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(state)
@@ -35,15 +35,15 @@ export function Login() {
       if (res.ok) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
-        window.dispatchEvent(new Event("storage")); // Notify other components
+        window.dispatchEvent(new Event("storage")); 
 
         alert("✅ Login successful");
         console.log("User:", data.user);
         console.log("Token:", data.token);
-        navigate("/"); // Redirect after login
+        navigate("/"); 
       } else {
         alert("❌ " + data.message);
-        navigate("/register"); // Redirect to register if login failed
+        navigate("/register"); 
       }
     } catch (err) {
       alert("Server error");

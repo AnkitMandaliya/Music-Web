@@ -2,12 +2,10 @@ const Song = require("../models/Song");
 const path = require("path");
 
 
-// ✅ Add song (URL or file)
 exports.addSong = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    // File upload
     if (req.file) {
       const { title, artist, genre } = req.body;
 
@@ -24,14 +22,14 @@ exports.addSong = async (req, res) => {
         title,
         artist,
         genre,
-        filePath: `uploads/${req.file.filename}`, // ✅ FIXED HERE
+        filePath: `uploads/${req.file.filename}`, 
       });
 
       await song.save();
       return res.status(201).json(song);
     }
 
-    // URL-based (YouTube or direct link)
+    
     const { title, artist, url, genre } = req.body;
 
     if (!title || !artist) {
@@ -58,17 +56,17 @@ exports.addSong = async (req, res) => {
   }
 };
 
-// GET /api/songs
+
 exports.getSongs = async (req, res) => {
   try {
-    const songs = await Song.find({ userId: req.user._id });
+    const songs = await Song.find({ userId: req.user.id });
     res.json(songs);
   } catch (err) {
     res.status(500).json({ message: "Error fetching songs" });
   }
 };
 
-// DELETE /api/songs/:id
+
 exports.deleteSong = async (req, res) => {
   try {
     const song = await Song.findOneAndDelete({ _id: req.params.id, userId: req.user._id });

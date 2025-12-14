@@ -37,7 +37,7 @@ export function SongForm({ onAddSong }) {
         savedSong = await addSong(formData, token);
 
 if (!savedSong._id) {
-  const fetched = await fetch(`http://localhost:5000/api/songs`, {
+  const fetched = await fetch(`${import.meta.VITE_API_URL}/api/songs`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   const latestSongs = await fetched.json();
@@ -66,7 +66,6 @@ if (!savedSong._id) {
       onAddSong((prev) => [...prev, savedSong]);
       alert(`Song "${title}" added successfully! 🎶`);
 
-      // ✅ Reset form
       setGenre("");
       setTitle("");
       setArtist("");
