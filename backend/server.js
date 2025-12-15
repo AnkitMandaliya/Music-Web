@@ -16,7 +16,7 @@ mongoose.connect(process.env.MONGO_URI, {
 
 
 app.use(cors({
-  origin: "https://music-web-2-8ne4.onrender.com/",
+  origin: "https://music-web-2-8ne4.onrender.com",
   credentials: true
 }));
 app.use(express.json());
@@ -29,13 +29,6 @@ const playlistRoutes = require("./routes/playlistRoutes");
 app.use("/api/auth", authRoutes);
 app.use("/api/playlist", playlistRoutes); 
 
-
-// const clientPath = path.join(__dirname, "../Client/dist");
-// app.use(express.static(clientPath));
-
-// app.get("*", (req, res) => {
-//   res.sendFile(path.resolve(clientPath, "index.html"));
-// });
 
 
 const PORT = process.env.PORT || 5000;
