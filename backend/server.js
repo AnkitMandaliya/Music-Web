@@ -16,7 +16,7 @@ mongoose.connect(process.env.MONGO_URI, {
 
 
 app.use(cors({
-  origin: "https://simple-music-frontend.onrender.com",
+  origin: "https://music-web-2-8ne4.onrender.com/",
   credentials: true
 }));
 app.use(express.json());
