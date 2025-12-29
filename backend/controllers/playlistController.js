@@ -1,8 +1,6 @@
-const Song = require("../models/Song");
-const path = require("path");
+import { Song } from "../models/Song.js"
 
-
-exports.addSong = async (req, res) => {
+export const addSong = async (req, res) => {
   try {
     const userId = req.user.id;
 
@@ -57,7 +55,7 @@ exports.addSong = async (req, res) => {
 };
 
 
-exports.getSongs = async (req, res) => {
+export const getSongs = async (req, res) => {
   try {
     const songs = await Song.find({ userId: req.user.id });
     res.json(songs);
@@ -67,7 +65,7 @@ exports.getSongs = async (req, res) => {
 };
 
 
-exports.deleteSong = async (req, res) => {
+export const deleteSong = async (req, res) => {
   try {
     const song = await Song.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
     if (!song) return res.status(404).json({ message: "Song not found" });
@@ -76,3 +74,5 @@ exports.deleteSong = async (req, res) => {
     res.status(500).json({ message: "Error deleting song" });
   }
 };
+
+export const playlistController={addSong,deleteSong,getSongs}

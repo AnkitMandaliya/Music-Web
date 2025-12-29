@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-
+import mongoose from "mongoose";
 const songSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -19,4 +18,4 @@ const songSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-module.exports = mongoose.model("Song", songSchema);
+export const Song = mongoose.model("Song", songSchema);

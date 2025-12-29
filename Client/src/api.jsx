@@ -5,6 +5,7 @@ export async function fetchSongs(token) {
   console.log("🔐 Token used in fetchSongs:", token);
 
   const response = await fetch(`${BASE_URL}/songs`, {
+    method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
     },

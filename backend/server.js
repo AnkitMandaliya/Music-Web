@@ -1,35 +1,34 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const dotenv = require("dotenv");
-const path = require("path");
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import dotenv from "dotenv";
+
+import {authRoutes} from "./routes/authRoutes.js";
+import {playlistRoutes} from "./routes/playlistRoutes.js";
 
 dotenv.config();
 
 const app = express();
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("✅ MongoDB connected"))
-.catch((err) => console.error("❌ MongoDB error:", err));
-
 
 app.use(cors({
   origin: "https://music-web-2-8ne4.onrender.com",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 }));
+app.options("*", cors()); 
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/uploads", express.static("uploads")); 
+app.use("/uploads", express.static("uploads"));
 
-const authRoutes = require("./routes/authRoutes");
-const playlistRoutes = require("./routes/playlistRoutes");
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch(err => console.error("❌ MongoDB error:", err));
 
 app.use("/api/auth", authRoutes);
-app.use("/api/playlist", playlistRoutes); 
-
-
+app.use("/api/playlist", playlistRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
